@@ -4,6 +4,7 @@ go 1.21.3
 
 require (
 	aidanwoods.dev/go-paseto v1.5.1
+	github.com/Befous/BackendGin v1.2.0
 	go.mongodb.org/mongo-driver v1.13.1
 	golang.org/x/crypto v0.18.0
 )
