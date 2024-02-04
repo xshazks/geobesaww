@@ -4,11 +4,23 @@ import (
 	"encoding/json"
 	"net/http"
 	"os"
+	"strings"
+
+	"github.com/Befous/BackendGin/models"
 )
 
-func ReturnStruct(DataStuct any) string {
+func ReturnStruct(DataStuct any) (result string) {
 	jsondata, _ := json.Marshal(DataStuct)
 	return string(jsondata)
+}
+
+func ReturnString(geojson []FullGeoJson) string {
+	var names []string
+	for _, geojson := range geojson {
+		names = append(names, geojson.Properties.Name)
+	}
+	result := strings.Join(names, ", ")
+	return result
 }
 
 // ----------------------------------------------------------------------- User -----------------------------------------------------------------------
@@ -441,20 +453,29 @@ func AmbilDataGeojson(mongoenv, dbname, collname string, r *http.Request) string
 }
 
 func PostGeoIntersects(mongoenv, dbname, collname string, r *http.Request) string {
-	var coordinate Point
+	var geospatial models.Geospatial
 	var response Pesan
 	response.Status = false
 	mconn := SetConnection(mongoenv, dbname)
 
-	err := json.NewDecoder(r.Body).Decode(&coordinate)
+	err := json.NewDecoder(r.Body).Decode(&geospatial)
 
 	if err != nil {
 		response.Message = "Error parsing application/json: " + err.Error()
 		return ReturnStruct(response)
 	}
 
+	geointersects, err := GeoIntersects(mconn, collname, geospatial)
+
+	if err != nil {
+		response.Message = "Error : " + err.Error()
+		return ReturnStruct(response)
+	}
+
+	result := ReturnString(geointersects)
+
 	response.Status = true
-	response.Message = GeoIntersects(mconn, collname, coordinate)
+	response.Message = result
 
 	return ReturnStruct(response)
 }
