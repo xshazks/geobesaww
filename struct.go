@@ -102,7 +102,7 @@ type Point struct {
 }
 
 type Polyline struct {
-	Coordinates [][]float64 `json:"coordinates" bson:"coordinates"`
+	Coordinates [][]float64 `json:"coordinates"`
 }
 
 type Polygon struct {
