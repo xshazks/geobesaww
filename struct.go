@@ -95,10 +95,10 @@ type GeoJsonPolygon struct {
 }
 
 type Point struct {
-	Coordinates []float64 `json:"coordinates" bson:"coordinates"`
-	Max         int64     `json:"max,omitempty" bson:"max,omitempty"`
-	Min         int64     `json:"min,omitempty" bson:"min,omitempty"`
-	Radius      int64     `json:"radius,omitempty" bson:"radius,omitempty"`
+	Coordinates [][]float64 `json:"coordinates" bson:"coordinates"`
+	Max         int64       `json:"max,omitempty" bson:"max,omitempty"`
+	Min         int64       `json:"min,omitempty" bson:"min,omitempty"`
+	Radius      int64       `json:"radius,omitempty" bson:"radius,omitempty"`
 }
 
 type Polyline struct {
